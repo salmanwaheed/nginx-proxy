@@ -1,0 +1,13 @@
+version: '3.7'
+services:
+  nginx_proxy:
+    build: .
+    container_name: nginx_proxy
+    ports:
+     - "80:80"
+     - "443:443"
+    volumes:
+     - /var/run/docker.sock:/tmp/docker.sock
+     - ./conf.d:/etc/nginx/conf.d
+     - .:/var/log/nginx
+     - ./default.tmpl:/src/default.tmpl
