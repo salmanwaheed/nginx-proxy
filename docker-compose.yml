@@ -11,3 +11,4 @@ services:
      - ./conf.d:/etc/nginx/conf.d
      - .:/var/log/nginx
      - ./default.tmpl:/src/default.tmpl
+    network_mode: bridge
