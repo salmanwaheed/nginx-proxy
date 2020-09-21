@@ -9,7 +9,8 @@ RUN mkdir -p /run/nginx
 #fix for long server names
 RUN sed -i 's/# server_names_hash_bucket/server_names_hash_bucket/g' /etc/nginx/nginx.conf
 
-ADD https://github.com/jwilder/forego/releases/download/v0.16.1/forego /usr/local/bin/forego
+RUN wget https://github.com/jwilder/forego/releases/download/v0.16.1/forego
+RUN mv forego /usr/local/bin/forego
 RUN chmod u+x /usr/local/bin/forego
 
 ENV DOCKER_GEN_VERSION 0.7.4

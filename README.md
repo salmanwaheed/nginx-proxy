@@ -1,7 +1,6 @@
 # nginx proxy
 
-* you can run whichever [webapps-via-docker](https://github.com/salmanwaheed/webapps-via-docker) you like and follow steps
-* nginx proxy would work on all cloud providers (AWS, GCP, Azure or etc), and localhost if you have same network
+* [webapps-via-docker](https://github.com/salmanwaheed/webapps-via-docker) are compatible with nginx-proxy and would work on all cloud providers (AWS, GCP, Azure or etc), and localhost too if you are on same network
 
 * usage:
 ```yml
