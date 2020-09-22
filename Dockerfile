@@ -2,36 +2,29 @@ FROM alpine:3.9
 
 RUN apk --update add wget nginx openssl dnsmasq bash
 
-RUN echo "daemon off;" >> /etc/nginx/nginx.conf
-# RUN nginx -g 'pid /tmp/nginx.pid; daemon off;'
-RUN mkdir -p /run/nginx
+RUN echo "daemon off;" >> /etc/nginx/nginx.conf \
+  && mkdir -p /run/nginx \
+  && sed -i 's/# server_names_hash_bucket/server_names_hash_bucket/g' /etc/nginx/nginx.conf
 
-#fix for long server names
-RUN sed -i 's/# server_names_hash_bucket/server_names_hash_bucket/g' /etc/nginx/nginx.conf
-
-RUN wget https://github.com/jwilder/forego/releases/download/v0.16.1/forego
-RUN mv forego /usr/local/bin/forego
-RUN chmod u+x /usr/local/bin/forego
+RUN wget https://github.com/jwilder/forego/releases/download/v0.16.1/forego \
+ && mv forego /usr/local/bin/forego \
+ && chmod u+x /usr/local/bin/forego
 
 ENV DOCKER_GEN_VERSION 0.7.4
 
-RUN wget https://github.com/jwilder/docker-gen/releases/download/$DOCKER_GEN_VERSION/docker-gen-linux-amd64-$DOCKER_GEN_VERSION.tar.gz
-RUN tar xvzf docker-gen-linux-amd64-$DOCKER_GEN_VERSION.tar.gz
-RUN mv docker-gen /usr/local/bin/docker-gen
-RUN chmod +x /usr/local/bin/docker-gen
+RUN wget https://github.com/jwilder/docker-gen/releases/download/$DOCKER_GEN_VERSION/docker-gen-linux-amd64-$DOCKER_GEN_VERSION.tar.gz \
+  && tar xvzf docker-gen-linux-amd64-$DOCKER_GEN_VERSION.tar.gz \
+  && mv docker-gen /usr/local/bin/docker-gen \
+  && chmod +x /usr/local/bin/docker-gen
 
-ENV SRC_DIR /src
+WORKDIR /src
+COPY . .
 
-RUN mkdir $SRC_DIR
-WORKDIR $SRC_DIR
-ADD . $SRC_DIR
+RUN echo user=root >> /etc/dnsmasq.conf \
+  && dnsmasq \
+  && chmod +x start.sh
 
-RUN echo user=root >> /etc/dnsmasq.conf
-RUN dnsmasq
-RUN chmod +x start.sh
-
-EXPOSE 80
-EXPOSE 443
+EXPOSE 80 443
 ENV DOCKER_HOST unix:///tmp/docker.sock
 
 CMD ["forego", "start", "-r"]
