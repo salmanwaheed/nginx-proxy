@@ -1,8 +1,8 @@
-# nginx proxy
+# nginx-proxy
 
-* [webapps-via-docker](https://github.com/salmanwaheed/webapps-via-docker) are compatible with nginx-proxy and would work on all cloud providers (AWS, GCP, Azure or etc), and localhost too if you are on same network
+Run multiple docker apps using single nginx container with dynamic template.
 
-* usage:
+**Usage:**
 ```yml
 ---
 version: '3.7'
